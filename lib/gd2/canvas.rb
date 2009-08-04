@@ -13,7 +13,8 @@ module GD2
       end
       
       def draw(image, color)
-        @font.draw(image.image_ptr, @point.x, @point.y, @angle, @string, color.rgba)
+        color = color.is_a?(Color) ? color.rgba : color
+        @font.draw(image.image_ptr, @point.x, @point.y, @angle, @string, color)
       end
     end
     
