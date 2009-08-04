@@ -1,10 +1,10 @@
 module CGD2
   
-  def self.lib_path
+  def self.lib_paths
      ["/opt/local/lib/libgd.2.dylib", '/usr/lib/libgd.so.2']
   end
   extend FFI::Library
-  ffi_lib lib_path
+  ffi_lib *lib_paths
   
   # BGD_DECLARE(gdImagePtr) gdImageCreate (int sx, int sy)
   attach_function :gdImageCreate, [:int, :int], :pointer
