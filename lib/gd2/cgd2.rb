@@ -1,7 +1,7 @@
 module CGD2
   
   def self.lib_path
-     "/opt/local/lib/libgd.2.dylib"
+     ["/opt/local/lib/libgd.2.dylib", '/usr/lib/libgd.so.2']
   end
   extend FFI::Library
   ffi_lib lib_path
