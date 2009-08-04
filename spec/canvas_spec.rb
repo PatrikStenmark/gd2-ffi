@@ -46,10 +46,26 @@ describe "Canvas" do
       p_text = GD2::Canvas::Point.new(1,2)
       
       
-      CGD2.should_receive(:gdImageStringFT).with(anything, anything, @black.to_i, "Vera.ttf", 10.0, 0.0, 1, 2, "foobar")
+      CGD2.should_receive(:gdImageStringFT).with(anything, anything, @black.to_i, "Vera.ttf", 10.0, 0.0, 1, 2, "foobar").and_return(mock("Pointer", :null? => true))
       
       text = GD2::Canvas::Text.new(font, p_text, 0, "foobar")
       text.draw(@image, @black)
+    end
+    
+    it "should raise a FreeTypeError if the C call is unsuccesful" do
+      font = GD2::Font::TrueType.new(
+        "Vera.ttf",
+        10.0
+      )
+      
+      p_text = GD2::Canvas::Point.new(1,2)
+      text = GD2::Canvas::Text.new(font, p_text, 0, "foobar")
+      
+      CGD2.stub!(:gdImageStringFT).and_return(mock("Nullpointer", :null? => false))
+      lambda {
+        text.draw(@image, @black)
+        
+      }.should raise_error(GD2::Font::TrueType::FreeTypeError)
     end
   end
 end
