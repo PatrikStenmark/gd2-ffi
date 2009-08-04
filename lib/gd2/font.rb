@@ -17,7 +17,44 @@ module GD2
         
         
         raise FreeTypeError, error unless error.null?
+        
+        brect = brect.read_array_of_int(8)
+        
+        { :lower_left   => [brect[0], brect[1]],
+          :lower_right  => [brect[2], brect[3]],
+          :upper_right  => [brect[4], brect[5]],
+          :upper_left   => [brect[6], brect[7]]
+          #:position     => position
+        }
+        
       end
+      
+      # Return a hash describing the rectangle that would enclose the given
+      # string rendered in this font at the given angle. The returned hash
+      # contains the following keys:
+      #
+      # - :lower_left => The [x, y] coordinates of the lower left corner.
+      # - :lower_right => The [x, y] coordinates of the lower right corner.
+      # - :upper_right => The [x, y] coordinates of the upper right corner.
+      # - :upper_left => The [x, y] coordinates of the upper left corner.
+      # - :position => An array of floating point character position offsets for
+      #   each character of the +string+, beginning with 0.0. The array also
+      #   includes a final position indicating where the last character ends.
+      #
+      # The _upper_, _lower_, _left_, and _right_ references are relative to the
+      # text of the +string+, regardless of the +angle+.
+      def bounding_rectangle(string, angle = 0.0)
+        data = draw(nil, 0, 0, angle, string, 0)
+
+        #if string.length == 1
+        #  # gd annoyingly fails to provide xshow data for strings of length 1
+        #  position = draw(nil, 0, 0, angle, string + ' ', 0)[:position]
+        #  data[:position] = position[0...-1]
+        #end
+
+        data
+      end
+      
     end
     
   end
