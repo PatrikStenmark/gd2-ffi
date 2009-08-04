@@ -3,4 +3,4 @@ require 'rbconfig'
 require 'spec'
 
 $: << 'lib'
-require 'gd2'
+require 'gd2-ffi'

@@ -18,4 +18,9 @@ module CGD2
   
   # void* gdImagePngPtr(gdImagePtr im, int *size) (FUNCTION)
   attach_function :gdImagePngPtr, [:pointer, :pointer], :pointer
+  
+  # gdImageDestroy(gdImagePtr im) (FUNCTION)
+  attach_function :gdImageDestroy, [:pointer], :void
+  
+  attach_function :gdFree, [:pointer], :void
 end

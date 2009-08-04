@@ -10,8 +10,14 @@ module GD2
   end
   
   class Image::TrueColor < Image
+    def release(ptr)
+      CGD2::gdImageDestroy(ptr)
+    end
     def initialize(w, h)
-      @image_ptr = CGD2::gdImageCreateTrueColor(w, h)
+      @image_ptr = FFI::AutoPointer.new(
+        CGD2::gdImageCreateTrueColor(w, h), 
+        self.method(:release)
+      )
     end
     
     def png
@@ -20,7 +26,11 @@ module GD2
       
       size = size.get_int(0)
       
-      png_pointer.get_bytes(0, size)
+      png = png_pointer.get_bytes(0, size)
+      
+      CGD2::gdFree(png_pointer)
+      
+      png
     end
   end
 end
