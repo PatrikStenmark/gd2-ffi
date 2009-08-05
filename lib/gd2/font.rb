@@ -12,7 +12,7 @@ module GD2
       
       def draw(image_ptr, x, y, angle, string, fg)
         brect = FFI::MemoryPointer.new(:int, 8)
-        string.gsub!('&', '&amp;')
+        string = string.gsub('&', '&amp;')
         error = CGD2::gdImageStringFT(image_ptr, brect, fg, @fontname, @ptsize, angle.to_f, x, y, string)
         
         
